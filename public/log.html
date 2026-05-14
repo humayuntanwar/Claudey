@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Scanner — Log</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="logo">PRE-<span>CATALYST</span><br>SCANNER</div>
+    <nav>
+      <a href="index.html">&gt; Daily Feed</a>
+      <a href="watchlist.html">&gt; Watchlist</a>
+      <a href="log.html" class="active">&gt; Log</a>
+    </nav>
+    <div class="rules-panel">
+      <h4>Rules</h4>
+      <ul>
+        <li class="rule-enter">Under 14 days → ENTER or KILL only</li>
+        <li class="rule-watch">14–45 days → ENTER / WATCH / KILL</li>
+        <li class="rule-kill">Over 45 days → WATCH or KILL</li>
+        <li class="rule-note">Max 2 tickers on watchlist</li>
+        <li class="rule-note">Social media = lagging signal</li>
+        <li class="rule-note">Enter PRE-catalyst, not post</li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <h1>Analysis Log</h1>
+      <span class="subtitle" id="log-meta"></span>
+    </div>
+    <div id="log-status" class="msg">Loading log...</div>
+    <div id="log-feed"></div>
+  </main>
+</div>
+<script src="app.js"></script>
+<script>Log.init();</script>
+</body>
+</html>

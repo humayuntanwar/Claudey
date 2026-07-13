@@ -120,6 +120,12 @@
     Register of licensed sponsors: workers</a> on GOV.UK — the only authoritative source for whether a company
   currently holds a Skilled Worker sponsor licence. Use Ctrl/Cmd+F on the register once it loads and search the
   company name. Third-party "sponsor checker" sites are not official and can be out of date.
+  <br><br>
+  <strong>Careers links:</strong> every URL was re-checked against live search results on 13 Jul 2026; 46 of the
+  original 100 had moved (ATS migration, domain change, rebrand) and were corrected. Rows marked
+  <span style="color:var(--amber)">⚠</span> have a caveat — hover the icon for details (e.g. Nutmeg was folded into
+  J.P. Morgan, Cashplus Bank rebranded to Zempler Bank, Onfido was acquired by Entrust). Sites still change constantly,
+  so treat this as current-as-of-verification, not permanent.
 </div>
 
 <div class="controls">
@@ -150,7 +156,8 @@
 const REGISTER_URL = 'https://www.gov.uk/government/publications/register-of-licensed-sponsors-workers';
 const ROLE_QUERY = '("solutions engineer" OR "solution architect" OR "partner engineer" OR "presales" OR "pre-sales" OR "solutions consultant")';
 
-// [name, careers/domain URL, isB2B (true = enterprise/platform, more likely to hire SE/SA/Presales)]
+// [name, careers/domain URL, isB2B (true = enterprise/platform, more likely to hire SE/SA/Presales), note (optional caveat)]
+// URLs re-verified via live search on 2026-07-13; see notes for rebrands/acquisitions/uncertain links.
 const companies = [
   ['Revolut', 'https://www.revolut.com/careers/', true],
   ['Wise', 'https://www.wise.jobs/', true],
@@ -158,25 +165,25 @@ const companies = [
   ['Starling Bank', 'https://www.starlingbank.com/careers/', true],
   ['Checkout.com', 'https://www.checkout.com/careers', true],
   ['GoCardless', 'https://gocardless.com/about/careers/', true],
-  ['Zopa Bank', 'https://www.zopa.com/careers', false],
-  ['ClearBank', 'https://www.clear.bank/careers/', true],
-  ['Currencycloud', 'https://www.currencycloud.com/careers/', true],
+  ['Zopa Bank', 'https://careers.zopa.com/', false],
+  ['ClearBank', 'https://clear.bank/join-clearbank/careers', true],
+  ['Currencycloud', 'https://www.currencycloud.com/company/careers/', true],
   ['TrueLayer', 'https://truelayer.com/careers/', true],
-  ['Thought Machine', 'https://thoughtmachine.net/careers/', true],
-  ['OakNorth', 'https://www.oaknorth.com/careers/', true],
+  ['Thought Machine', 'https://thoughtmachine.avature.net/careers/', true],
+  ['OakNorth', 'https://oaknorth.co.uk/about/careers/', true],
   ['Tide', 'https://www.tide.co/careers/', true],
   ['Plum', 'https://withplum.com/careers', false],
-  ['Chip', 'https://www.getchip.uk/careers', false],
+  ['Chip', 'https://chip.teamtailor.com/jobs', false, 'No confirmed live careers page found — this ATS board may show no open roles right now.'],
   ['Moneybox', 'https://www.moneyboxapp.com/careers/', false],
-  ['Cleo', 'https://www.meetcleo.com/careers', false],
-  ['Curve', 'https://www.imaginecurve.com/careers', false],
-  ['Onfido', 'https://onfido.com/careers/', true],
+  ['Cleo', 'https://web.meetcleo.com/careers', false],
+  ['Curve', 'https://www.curve.com/careers/', false],
+  ['Onfido (part of Entrust)', 'https://www.entrust.com/company/careers', true, 'Onfido was acquired by Entrust in 2024; hiring is now under the Entrust brand.'],
   ['ComplyAdvantage', 'https://complyadvantage.com/careers/', true],
   ['Griffin', 'https://griffin.com/careers', true],
-  ['Weavr', 'https://weavr.io/careers/', true],
+  ['Weavr', 'https://careers.weavr.io/', true],
   ['Bud Financial', 'https://www.thisisbud.com/careers', true],
-  ['Yapily', 'https://www.yapily.com/careers', true],
-  ['Marshmallow', 'https://www.marshmallow.com/careers', false],
+  ['Yapily', 'https://www.yapily.com/company/careers', true],
+  ['Marshmallow', 'https://www.marshmallow.com/jobs', false],
   ['Zego', 'https://www.zego.com/careers/', true],
   ['Cuvva', 'https://www.cuvva.com/careers', false],
   ['Lendable', 'https://www.lendable.co.uk/careers', false],
@@ -185,14 +192,14 @@ const companies = [
   ['iwoca', 'https://www.iwoca.co.uk/careers/', true],
   ['Modulr', 'https://www.modulrfinance.com/careers', true],
   ['Wayflyer', 'https://www.wayflyer.com/careers', false],
-  ['Snoop', 'https://www.snoop.app/careers', false],
-  ['Moneyfarm', 'https://www.moneyfarm.com/uk/careers/', false],
-  ['Nutmeg', 'https://www.nutmeg.com/careers', false],
-  ['PensionBee', 'https://www.pensionbee.com/careers', false],
+  ['Snoop', 'https://snoop.app/jobs/', false],
+  ['Moneyfarm', 'https://www.moneyfarm.com/uk/jobs/', false],
+  ['Nutmeg (folded into J.P. Morgan)', 'https://careers.jpmorgan.com/global/en/home', false, 'Nutmeg was retired in Nov 2025 and merged into J.P. Morgan Personal Investing UK — link goes to J.P. Morgan’s global careers portal, not a Nutmeg-specific page.'],
+  ['PensionBee', 'https://pensionbeelimited-1750950714.teamtailor.com/jobs', false, 'Careers moved off pensionbee.com to this Teamtailor board — double-check it’s still current.'],
   ['Freetrade', 'https://freetrade.io/careers', false],
   ['Trading 212', 'https://www.trading212.com/careers', false],
-  ['IG Group', 'https://www.iggroup.com/careers', true],
-  ['CMC Markets', 'https://www.cmcmarkets.com/en-gb/careers', true],
+  ['IG Group', 'https://www.iggroup.com/about-us/careers', true],
+  ['CMC Markets', 'https://www.cmcmarkets.com/group/careers', true],
   ['Form3', 'https://www.form3.tech/careers', true],
   ['Volt.io', 'https://www.volt.io/careers', true],
   ['Banked', 'https://www.banked.com/careers', true],
@@ -205,52 +212,52 @@ const companies = [
   ['Wealthify', 'https://www.wealthify.com/careers', false],
   ['Moneyhub', 'https://www.moneyhub.com/careers', true],
   ['Codat', 'https://www.codat.io/careers/', true],
-  ['Salary Finance', 'https://www.salaryfinance.com/uk/careers/', true],
-  ['Wagestream', 'https://wagestream.com/en/careers/', true],
-  ['Previse', 'https://previse.com/careers', true],
+  ['Salary Finance', 'https://job-boards.greenhouse.io/salaryfinance', true],
+  ['Stream (formerly Wagestream)', 'https://stream.co/en/company/careers', true, 'Wagestream rebranded to Stream in September 2025.'],
+  ['Previse', 'https://previse.co/en-gb/company/careers/', true, 'Domain moved from previse.com to previse.co.'],
   ['Liberis', 'https://www.liberis.com/careers/', true],
-  ['Capital on Tap', 'https://www.capitalontap.com/careers', false],
+  ['Capital on Tap', 'https://www.capitalontap.com/en/company/careers/', false],
   ['Nucleus Commercial Finance', 'https://www.nucleuscommercialfinance.com/careers/', false],
   ['Seedrs', 'https://www.seedrs.com/careers', false],
-  ['Crowdcube', 'https://www.crowdcube.com/careers', false],
+  ['Crowdcube', 'https://careers.crowdcube.com/', false],
   ['Payhawk', 'https://payhawk.com/careers', true],
-  ['Soldo', 'https://www.soldo.com/careers/', true],
-  ['PPRO', 'https://ppro.com/careers/', true],
-  ['Currencies Direct', 'https://www.currenciesdirect.com/careers', false],
+  ['Soldo', 'https://careers.soldo.com/', true],
+  ['PPRO', 'https://www.ppro.com/about-us/careers/', true],
+  ['Currencies Direct', 'https://www.currenciesdirect.com/en/about/careers-with-currencies-direct', false],
   ['WorldFirst', 'https://www.worldfirst.com/uk/careers/', false],
-  ['Equals Money (FairFX)', 'https://www.equalsmoney.com/careers', false],
-  ['Silverbird', 'https://www.silverbird.io/careers', false],
+  ['Equals Money (FairFX)', 'https://equalsmoney.recruitee.com/', false],
+  ['Silverbird', 'https://apply.workable.com/silverbird/', false],
   ['Railsr', 'https://www.railsr.com/careers', true],
-  ['Cashplus Bank', 'https://www.cashplus.com/careers', false],
-  ['Suits Me', 'https://www.suitsme.com/careers', false],
-  ['Monese', 'https://monese.com/careers', false],
+  ['Zempler Bank (formerly Cashplus)', 'https://www.zemplerbank.com/about/careers/', false, 'Cashplus Bank rebranded to Zempler Bank in 2025.'],
+  ['Suits Me', 'https://suitsmecard.com/careers', false, 'Official domain is suitsmecard.com, not suitsme.com.'],
+  ['Monese', 'https://careers.monese.com/', false],
   ['Trust Payments', 'https://www.trustpayments.com/careers/', true],
-  ['Judopay', 'https://www.judopay.com/careers', true],
+  ['Judopay', 'https://www.judopay.com/company/careers', true],
   ['SaaScada', 'https://www.saascada.com/careers', true],
-  ['10x Banking', 'https://www.10xbanking.com/careers', true],
-  ['Mambu', 'https://mambu.com/careers', true],
+  ['10x Banking', 'https://www.10xbanking.com/about/job-vacancies', true],
+  ['Mambu', 'https://mambu.com/en/careers', true],
   ['FNZ', 'https://www.fnz.com/careers', true],
   ['Finastra', 'https://www.finastra.com/careers', true],
-  ['eToro', 'https://www.etoro.com/careers/', false],
+  ['eToro', 'https://www.etoro.com/en-us/about/careers/', false],
   ['Plaid', 'https://plaid.com/careers/', true],
-  ['Adyen', 'https://www.adyen.com/careers', true],
-  ['Klarna', 'https://www.klarna.com/international/careers/', true],
+  ['Adyen', 'https://careers.adyen.com/', true],
+  ['Klarna', 'https://www.klarna.com/careers/', true],
   ['SumUp', 'https://www.sumup.com/en-gb/careers/', true],
-  ['Airwallex', 'https://www.airwallex.com/careers', true],
-  ['Rapyd', 'https://www.rapyd.net/careers/', true],
+  ['Airwallex', 'https://careers.airwallex.com/', true],
+  ['Rapyd', 'https://www.rapyd.net/company/careers/', true],
   ['Nium', 'https://www.nium.com/careers', true],
-  ['Worldpay', 'https://www.worldpay.com/en-gb/careers', true],
-  ['Paysafe', 'https://www.paysafe.com/en/careers/', true],
+  ['Worldpay', 'https://jobs.worldpay.com/jobs', true],
+  ['Paysafe', 'https://www.paysafe.com/gb-en/careers/', true],
   ['Flagstone', 'https://www.flagstoneim.com/careers', true],
-  ['Bippit', 'https://www.bippit.com/careers', true],
+  ['Bippit', 'https://careers.bippit.com/', true],
   ['Paddle', 'https://www.paddle.com/careers', true],
-  ['Yonder', 'https://www.yondercard.com/careers', false],
-  ['Vitesse PSP', 'https://www.vitessepsp.com/careers', true],
+  ['Yonder', 'https://www.yonder.com/careers', false, 'Domain moved from yondercard.com to yonder.com.'],
+  ['Vitesse (formerly Vitesse PSP)', 'https://www.vitesse.io/careers', true, 'Domain moved from vitessepsp.com to vitesse.io.'],
   ['Aveni', 'https://aveni.ai/careers', true],
   ['Quantexa', 'https://www.quantexa.com/careers/', true],
   ['Featurespace', 'https://www.featurespace.com/careers/', true],
-  ['Bink', 'https://www.bink.com/careers', true],
-  ['Copper', 'https://copper.co/careers', true],
+  ['Bink', 'https://bink.com/join-our-team-2/', true],
+  ['Copper', 'https://copper.co/en/company/careers', true],
   ['Blockchain.com', 'https://www.blockchain.com/careers', true],
 ];
 
@@ -272,7 +279,7 @@ function render() {
   const b2bOnly = b2bOnlyEl.checked;
   tbody.innerHTML = '';
   let shown = 0;
-  companies.forEach(([name, careersUrl, isB2B], i) => {
+  companies.forEach(([name, careersUrl, isB2B, note], i) => {
     if (q && !name.toLowerCase().includes(q)) return;
     if (b2bOnly && !isB2B) return;
     shown++;
@@ -285,6 +292,14 @@ function render() {
     const nameTd = document.createElement('td');
     nameTd.className = 'name';
     nameTd.textContent = name;
+    if (note) {
+      const flag = document.createElement('span');
+      flag.textContent = ' ⚠';
+      flag.title = note;
+      flag.style.cursor = 'help';
+      flag.style.color = 'var(--amber)';
+      nameTd.appendChild(flag);
+    }
 
     const typeTd = document.createElement('td');
     const tag = document.createElement('span');

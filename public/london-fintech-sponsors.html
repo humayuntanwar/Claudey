@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>London Fintechs — Careers &amp; Sponsor Licence Check</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a0a;
+    --bg-panel: #111111;
+    --bg-row: #131313;
+    --bg-row-alt: #0e0e0e;
+    --border: #222222;
+    --text: #c8c8c8;
+    --text-dim: #777777;
+    --text-bright: #e8e8e8;
+    --green: #00cc66;
+    --accent: #336699;
+    --font: 'Courier New', Courier, monospace;
+  }
+  html, body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 13px; line-height: 1.5; }
+  body { padding: 24px; max-width: 1100px; margin: 0 auto; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--text-bright); }
+  h1 { color: var(--text-bright); font-size: 20px; margin-bottom: 6px; }
+  .subtitle { color: var(--text-dim); display: block; margin-bottom: 4px; }
+  .notice {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 12px 14px;
+    margin: 16px 0 20px;
+    color: var(--text);
+    font-size: 12.5px;
+  }
+  .notice a { color: var(--green); }
+  .controls { margin-bottom: 14px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  #search {
+    background: var(--bg-row);
+    border: 1px solid var(--border);
+    color: var(--text-bright);
+    font-family: var(--font);
+    padding: 8px 10px;
+    width: 260px;
+    font-size: 13px;
+  }
+  #count { color: var(--text-dim); }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    text-align: left;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border);
+    padding: 8px 10px;
+  }
+  tbody td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  tbody tr:nth-child(odd) { background: var(--bg-row); }
+  tbody tr:nth-child(even) { background: var(--bg-row-alt); }
+  tbody tr:hover { background: #1a1a1a; }
+  td.idx { color: var(--text-dim); width: 34px; }
+  td.name { color: var(--text-bright); font-weight: bold; }
+  .btn {
+    display: inline-block;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 5px 10px;
+    font-size: 11.5px;
+    font-family: var(--font);
+    white-space: nowrap;
+    cursor: pointer;
+    background: transparent;
+  }
+  .btn:hover { background: var(--accent); color: #fff; }
+  .btn-verify { border-color: var(--green); color: var(--green); }
+  .btn-verify:hover { background: var(--green); color: #06210f; }
+  td.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  footer { margin-top: 24px; color: var(--text-dim); font-size: 11.5px; }
+</style>
+</head>
+<body>
+
+<h1>London Fintech Companies — Careers &amp; Visa Sponsor Check</h1>
+<span class="subtitle">100 fintech companies headquartered in, or with a major engineering/commercial presence in, London.</span>
+
+<div class="notice">
+  <strong>How "Verify Sponsorship" works:</strong> the UK Home Office does not offer a per-company lookup URL, so
+  the button opens the official Home Office
+  <a href="https://www.gov.uk/government/publications/register-of-licensed-sponsors-workers" target="_blank" rel="noopener">
+    Register of licensed sponsors: workers</a> on GOV.UK. That register is the only authoritative
+  source for whether a company currently holds a Skilled Worker sponsor licence — use your browser's
+  find-in-page (Ctrl/Cmd+F) on the register once it loads and search the company name shown in that row.
+  Third-party "sponsor checker" sites are not official and can be out of date or wrong.
+  <br><br>
+  <strong>Careers links:</strong> best-effort links to each company's main careers/jobs page. Companies
+  redesign their sites often, so if a link 404s, search "&lt;company name&gt; careers" directly.
+</div>
+
+<div class="controls">
+  <input id="search" type="text" placeholder="Filter by company name...">
+  <span id="count"></span>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th class="idx">#</th>
+      <th>Company</th>
+      <th>Careers</th>
+      <th>Verify UK Sponsor Licence</th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+
+<footer>
+  Data compiled from public knowledge of the London fintech sector as of 2026. Company details (careers URLs,
+  HQ location, trading status) can change — verify independently before relying on this for hiring or visa decisions.
+</footer>
+
+<script>
+const REGISTER_URL = 'https://www.gov.uk/government/publications/register-of-licensed-sponsors-workers';
+
+const companies = [
+  ['Revolut', 'https://www.revolut.com/careers/'],
+  ['Wise', 'https://www.wise.jobs/'],
+  ['Monzo', 'https://monzo.com/careers/'],
+  ['Starling Bank', 'https://www.starlingbank.com/careers/'],
+  ['Checkout.com', 'https://www.checkout.com/careers'],
+  ['GoCardless', 'https://gocardless.com/about/careers/'],
+  ['Zopa Bank', 'https://www.zopa.com/careers'],
+  ['ClearBank', 'https://www.clear.bank/careers/'],
+  ['Currencycloud', 'https://www.currencycloud.com/careers/'],
+  ['TrueLayer', 'https://truelayer.com/careers/'],
+  ['Thought Machine', 'https://thoughtmachine.net/careers/'],
+  ['OakNorth', 'https://www.oaknorth.com/careers/'],
+  ['Tide', 'https://www.tide.co/careers/'],
+  ['Plum', 'https://withplum.com/careers'],
+  ['Chip', 'https://www.getchip.uk/careers'],
+  ['Moneybox', 'https://www.moneyboxapp.com/careers/'],
+  ['Cleo', 'https://www.meetcleo.com/careers'],
+  ['Curve', 'https://www.imaginecurve.com/careers'],
+  ['Onfido', 'https://onfido.com/careers/'],
+  ['ComplyAdvantage', 'https://complyadvantage.com/careers/'],
+  ['Griffin', 'https://griffin.com/careers'],
+  ['Weavr', 'https://weavr.io/careers/'],
+  ['Bud Financial', 'https://www.thisisbud.com/careers'],
+  ['Yapily', 'https://www.yapily.com/careers'],
+  ['Marshmallow', 'https://www.marshmallow.com/careers'],
+  ['Zego', 'https://www.zego.com/careers/'],
+  ['Cuvva', 'https://www.cuvva.com/careers'],
+  ['Lendable', 'https://www.lendable.co.uk/careers'],
+  ['Funding Circle', 'https://www.fundingcircle.com/uk/careers/'],
+  ['YouLend', 'https://youlend.com/careers/'],
+  ['iwoca', 'https://www.iwoca.co.uk/careers/'],
+  ['Modulr', 'https://www.modulrfinance.com/careers'],
+  ['Wayflyer', 'https://www.wayflyer.com/careers'],
+  ['Snoop', 'https://www.snoop.app/careers'],
+  ['Moneyfarm', 'https://www.moneyfarm.com/uk/careers/'],
+  ['Nutmeg', 'https://www.nutmeg.com/careers'],
+  ['PensionBee', 'https://www.pensionbee.com/careers'],
+  ['Freetrade', 'https://freetrade.io/careers'],
+  ['Trading 212', 'https://www.trading212.com/careers'],
+  ['IG Group', 'https://www.iggroup.com/careers'],
+  ['CMC Markets', 'https://www.cmcmarkets.com/en-gb/careers'],
+  ['Form3', 'https://www.form3.tech/careers'],
+  ['Volt.io', 'https://www.volt.io/careers'],
+  ['Banked', 'https://www.banked.com/careers'],
+  ['GoHenry', 'https://www.gohenry.com/uk/careers/'],
+  ['Kroo Bank', 'https://www.kroo.com/careers'],
+  ['Allica Bank', 'https://www.allica.bank/careers'],
+  ['Recognise Bank', 'https://www.recognisebank.co.uk/careers/'],
+  ['ClearScore', 'https://www.clearscore.com/careers'],
+  ['Habito', 'https://www.habito.com/careers'],
+  ['Wealthify', 'https://www.wealthify.com/careers'],
+  ['Moneyhub', 'https://www.moneyhub.com/careers'],
+  ['Codat', 'https://www.codat.io/careers/'],
+  ['Salary Finance', 'https://www.salaryfinance.com/uk/careers/'],
+  ['Wagestream', 'https://wagestream.com/en/careers/'],
+  ['Previse', 'https://previse.com/careers'],
+  ['Liberis', 'https://www.liberis.com/careers/'],
+  ['Capital on Tap', 'https://www.capitalontap.com/careers'],
+  ['Nucleus Commercial Finance', 'https://www.nucleuscommercialfinance.com/careers/'],
+  ['Seedrs', 'https://www.seedrs.com/careers'],
+  ['Crowdcube', 'https://www.crowdcube.com/careers'],
+  ['Payhawk', 'https://payhawk.com/careers'],
+  ['Soldo', 'https://www.soldo.com/careers/'],
+  ['PPRO', 'https://ppro.com/careers/'],
+  ['Currencies Direct', 'https://www.currenciesdirect.com/careers'],
+  ['WorldFirst', 'https://www.worldfirst.com/uk/careers/'],
+  ['Equals Money (FairFX)', 'https://www.equalsmoney.com/careers'],
+  ['Silverbird', 'https://www.silverbird.io/careers'],
+  ['Railsr', 'https://www.railsr.com/careers'],
+  ['Cashplus Bank', 'https://www.cashplus.com/careers'],
+  ['Suits Me', 'https://www.suitsme.com/careers'],
+  ['Monese', 'https://monese.com/careers'],
+  ['Trust Payments', 'https://www.trustpayments.com/careers/'],
+  ['Judopay', 'https://www.judopay.com/careers'],
+  ['SaaScada', 'https://www.saascada.com/careers'],
+  ['10x Banking', 'https://www.10xbanking.com/careers'],
+  ['Mambu', 'https://mambu.com/careers'],
+  ['FNZ', 'https://www.fnz.com/careers'],
+  ['Finastra', 'https://www.finastra.com/careers'],
+  ['eToro', 'https://www.etoro.com/careers/'],
+  ['Plaid', 'https://plaid.com/careers/'],
+  ['Adyen', 'https://www.adyen.com/careers'],
+  ['Klarna', 'https://www.klarna.com/international/careers/'],
+  ['SumUp', 'https://www.sumup.com/en-gb/careers/'],
+  ['Airwallex', 'https://www.airwallex.com/careers'],
+  ['Rapyd', 'https://www.rapyd.net/careers/'],
+  ['Nium', 'https://www.nium.com/careers'],
+  ['Worldpay', 'https://www.worldpay.com/en-gb/careers'],
+  ['Paysafe', 'https://www.paysafe.com/en/careers/'],
+  ['Flagstone', 'https://www.flagstoneim.com/careers'],
+  ['Bippit', 'https://www.bippit.com/careers'],
+  ['Paddle', 'https://www.paddle.com/careers'],
+  ['Yonder', 'https://www.yondercard.com/careers'],
+  ['Vitesse PSP', 'https://www.vitessepsp.com/careers'],
+  ['Aveni', 'https://aveni.ai/careers'],
+  ['Quantexa', 'https://www.quantexa.com/careers/'],
+  ['Featurespace', 'https://www.featurespace.com/careers/'],
+  ['Bink', 'https://www.bink.com/careers'],
+  ['Copper', 'https://copper.co/careers'],
+  ['Blockchain.com', 'https://www.blockchain.com/careers'],
+];
+
+const tbody = document.getElementById('tbody');
+const searchInput = document.getElementById('search');
+const countEl = document.getElementById('count');
+
+function render(filter) {
+  const q = (filter || '').trim().toLowerCase();
+  tbody.innerHTML = '';
+  let shown = 0;
+  companies.forEach(([name, careersUrl], i) => {
+    if (q && !name.toLowerCase().includes(q)) return;
+    shown++;
+    const tr = document.createElement('tr');
+
+    const idxTd = document.createElement('td');
+    idxTd.className = 'idx';
+    idxTd.textContent = i + 1;
+
+    const nameTd = document.createElement('td');
+    nameTd.className = 'name';
+    nameTd.textContent = name;
+
+    const careersTd = document.createElement('td');
+    const careersLink = document.createElement('a');
+    careersLink.href = careersUrl;
+    careersLink.target = '_blank';
+    careersLink.rel = 'noopener';
+    careersLink.className = 'btn';
+    careersLink.textContent = 'Careers page →';
+    careersTd.appendChild(careersLink);
+
+    const verifyTd = document.createElement('td');
+    const verifyBtn = document.createElement('a');
+    verifyBtn.href = REGISTER_URL;
+    verifyBtn.target = '_blank';
+    verifyBtn.rel = 'noopener';
+    verifyBtn.className = 'btn btn-verify';
+    verifyBtn.textContent = 'Verify Sponsorship ✓';
+    verifyBtn.title = 'Opens the official GOV.UK register — search "' + name + '" once it loads.';
+    verifyTd.appendChild(verifyBtn);
+
+    tr.appendChild(idxTd);
+    tr.appendChild(nameTd);
+    tr.appendChild(careersTd);
+    tr.appendChild(verifyTd);
+    tbody.appendChild(tr);
+  });
+  countEl.textContent = shown + ' / ' + companies.length + ' companies';
+}
+
+searchInput.addEventListener('input', () => render(searchInput.value));
+render('');
+</script>
+</body>
+</html>

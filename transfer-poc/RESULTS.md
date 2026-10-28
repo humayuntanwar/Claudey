@@ -160,3 +160,56 @@ T = greedy cost − controller cost on the math test set (mean of 2 CEM seeds). 
 
 Spearman(distance, transfer) = **-0.80** over 9 pairs (negative = closer landscapes transfer better). n=9, so this is a hint, not a result.
 
+
+## Pre-registered test: add a plateau-heavy game
+
+Prediction (written before running): adding Tower of Hanoi (plateau-heavy) to training improves zero-shot transfer to group_word.
+
+Hanoi fingerprint: p_better=0.323, p_flat=0.333, p_worse=0.344, step=0.114, branch=1.099
+
+| training set | countdown | group_word | planted_3sat |
+|---|---|---|---|
+| games_only | -0.13 | -1.14 | +0.18 |
+| games+hanoi | +0.01 | -1.24 | +0.11 |
+| hanoi_only | -2.89 | -3.10 | -1.09 |
+
+T = greedy cost − controller cost (mean of 3 seeds; positive = helped). Prediction: **FALSIFIED**.
+
+
+### Post-hoc (exploratory, not pre-registered): 6-disk Hanoi
+
+Greedy solves 16/16 6-disk Hanoi training instances (vs 5/16 for 8 disks).
+
+| training set | countdown | group_word | planted_3sat |
+|---|---|---|---|
+| games+hanoi6 | +0.06 | -1.35 | +0.10 |
+
+per-seed group_word T: -1.76, -1.85, -0.44
+
+
+### Post-hoc: sensitivity to controller perturbation
+
+Mean cost increase when the greedy controller is rotated by θ in 8 random directions (training instances). Higher = sharper optimum.
+
+| domain | θ=10° | θ=20° | θ=30° |
+|---|---|---|---|
+| countdown | +0.07 | -0.13 | +0.07 |
+| group_word | +0.17 | -0.05 | +0.97 |
+| planted_3sat | +0.53 | +0.69 | +0.86 |
+| sliding_tile | -0.07 | +0.33 | +0.51 |
+| lights_out | +0.54 | +0.17 | +1.20 |
+| maze | +0.06 | +0.13 | +0.11 |
+
+### Post-hoc: feature ablation of games-trained controllers
+
+T after zeroing one feature (mean of 3 games-trained controllers, test sets).
+
+| ablated | group_word T | planted_3sat T |
+|---|---|---|
+| (none) | -1.14 | +0.18 |
+| gain | -1.52 | +0.13 |
+| depth_rel | -0.97 | +0.11 |
+| crowding | -1.02 | -0.08 |
+| sib_rank | -0.68 | -0.02 |
+| stall | -1.09 | +0.04 |
+| stall*depth | -1.03 | +0.22 |

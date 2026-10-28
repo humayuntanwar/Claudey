@@ -1,0 +1,39 @@
+sliding_tile {'countdown': 0.215, 'group_word': -1.754, 'planted_3sat': 0.07}
+lights_out {'countdown': 0.382, 'group_word': -1.579, 'planted_3sat': 0.111}
+maze {'countdown': -0.304, 'group_word': -2.866, 'planted_3sat': -0.837}
+
+## Follow-up: single-game transfer matrix
+
+T = greedy cost − controller cost on the math test set (mean of 2 CEM seeds). Positive = helped.
+
+| trained on ↓ / tested on → | countdown | group_word | planted_3sat |
+|---|---|---|---|
+| sliding_tile | +0.21 | -1.75 | +0.07 |
+| lights_out | +0.38 | -1.58 | +0.11 |
+| maze | -0.30 | -2.87 | -0.84 |
+
+### Landscape fingerprints (measured with plain greedy search, no learning)
+
+| domain | p_better | p_flat | p_worse | step | branch |
+|---|---|---|---|---|---|
+| sliding_tile | 0.326 | 0.000 | 0.674 | 0.046 | 1.137 |
+| lights_out | 0.029 | 0.056 | 0.916 | 0.280 | 3.219 |
+| maze | 0.479 | 0.000 | 0.521 | 0.018 | 0.983 |
+| countdown | 0.196 | 0.283 | 0.521 | 0.213 | 1.698 |
+| group_word | 0.087 | 0.584 | 0.329 | 0.093 | 1.099 |
+| planted_3sat | 0.011 | 0.148 | 0.841 | 0.038 | 4.500 |
+
+| game → math | fingerprint distance | transfer T |
+|---|---|---|
+| sliding_tile → countdown | 2.48 | +0.21 |
+| lights_out → planted_3sat | 2.72 | +0.11 |
+| lights_out → countdown | 2.80 | +0.38 |
+| maze → countdown | 3.00 | -0.30 |
+| sliding_tile → planted_3sat | 3.36 | +0.07 |
+| sliding_tile → group_word | 3.63 | -1.75 |
+| maze → group_word | 3.86 | -2.87 |
+| maze → planted_3sat | 4.24 | -0.84 |
+| lights_out → group_word | 4.63 | -1.58 |
+
+Spearman(distance, transfer) = **-0.80** over 9 pairs (negative = closer landscapes transfer better). n=9, so this is a hint, not a result.
+

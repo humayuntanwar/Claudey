@@ -251,3 +251,35 @@ ALL = {**GAMES, **MATH}
 def make_instances(name, count, seed):
     rng = random.Random(f"{name}:{seed}")
     return [ALL[name](rng) for _ in range(count)]
+
+
+class Hanoi:
+    """Tower of Hanoi from a random legal configuration; all disks to peg 2.
+    State = tuple(peg of disk i), disk 0 smallest. h = disks not on peg 2.
+    Most moves leave h unchanged -> a plateau-heavy game (added for the
+    pre-registered prediction in plateau_test.py)."""
+    N = 8
+
+    def __init__(self, rng):
+        while True:
+            self.start = tuple(rng.randrange(3) for _ in range(self.N))
+            if self.h(self.start) >= 4:
+                break
+
+    def h(self, s):
+        return sum(1 for p in s if p != 2)
+
+    def expand(self, s):
+        top = {}
+        for d in range(self.N - 1, -1, -1):
+            top[s[d]] = d             # smallest disk on each peg ends up last
+        out = []
+        for src, d in top.items():
+            for dst in range(3):
+                if dst != src and (dst not in top or top[dst] > d):
+                    c = s[:d] + (dst,) + s[d + 1:]
+                    out.append((c, self.h(c)))
+        return out
+
+
+ALL["hanoi"] = Hanoi

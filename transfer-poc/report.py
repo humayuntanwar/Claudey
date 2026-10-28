@@ -40,7 +40,9 @@ lines += ["\n## Headline: transfer from games to math\n",
           "0 = no better than the best hand-picked classic search; <0 = worse.\n",
           "| math domain | best classic | games-trained (mean of 3) | oracle | random ctrl | gap closed |",
           "|---|---|---|---|---|---|"]
-lines += [f"| {d} | {b:.2f} | {g:.2f} | {o:.2f} | {r:.2f} | {gap:+.2f} |" for d, b, g, o, r, gap in headline]
+lines += [f"| {d} | {b:.2f} | {g:.2f} | {o:.2f} | {r:.2f} | "
+          + (f"{gap:+.2f}" if gap == gap else "n/a (oracle did not beat classic)") + " |"
+          for d, b, g, o, r, gap in headline]
 
 lines += ["\n## Learned controller weights\n",
           "features: h_rel, gain, depth_rel, crowding, sib_rank, stall, stall×depth\n",
